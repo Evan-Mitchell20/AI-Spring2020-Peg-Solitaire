@@ -1,0 +1,9 @@
+
+*.exe
+Peg-Solitaire/Peg-Solitaire/bin/Debug/Peg-Solitaire.exe.config
+*.pdb
+Peg-Solitaire/Peg-Solitaire/obj/Debug/Peg-Solitaire.csproj.CoreCompileInputs.cache
+Peg-Solitaire/Peg-Solitaire/obj/Debug/Peg-Solitaire.csproj.FileListAbsolute.txt
+Peg-Solitaire/Peg-Solitaire/obj/Debug/Peg-Solitaire.csproj.GenerateResource.cache
+Peg-Solitaire/Peg-Solitaire/obj/Debug/Peg_Solitaire.frm_menu.resources
+Peg-Solitaire/Peg-Solitaire/obj/Debug/Peg_Solitaire.Properties.Resources.resources
