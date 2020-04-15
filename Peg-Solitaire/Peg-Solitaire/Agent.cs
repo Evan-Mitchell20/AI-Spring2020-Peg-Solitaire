@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 
 namespace Peg_Solitaire
 {
+    /// <summary>
+    /// Abstract class for game solving agents.
+    /// All game solving agents should be derived from this class
+    /// </summary>
     class Agent
     {
         private GameState gameState;

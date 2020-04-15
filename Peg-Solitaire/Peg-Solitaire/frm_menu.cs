@@ -23,23 +23,18 @@ namespace Peg_Solitaire
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Event that fires when the GUI is loaded.
+        /// Used to setup the default configuration.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Form1_Load(object sender, EventArgs e)
         {
             CenterToScreen();
-
-            // Code below just for debug, will need to be moved
-            /*
-            GameState theGame = TriangleGames.BasicTriangle(5);
-            //List<List<List<int>>> nextMoves = theGame.nextMoves();
-            //GameState newState = theGame.nextState(nextMoves[0]);
-            //List<GameState> successors = theGame.getSuccessors();
-            DepthFirstAgent depthFirstAgent = new DepthFirstAgent(theGame);
-            BreadthFirstAgent breadthFirstAgent = new BreadthFirstAgent(theGame);
-            List<List<List<int>>> movesToWin = depthFirstAgent.Solve();
-            //List<List<List<int>>> movesToWin = breadthFirstAgent.Solve();
-            */
         }
 
+        // Will be used to run agents in background, not implemented yet.
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
             // Get the BackgroundWorker that raised this event.
@@ -52,11 +47,20 @@ namespace Peg_Solitaire
             e.Result = selectedAgent.Solve();
         }
 
+        // Will be used to run agents in background, not implemented yet.
         private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
 
         }
 
+        /// <summary>
+        /// Event that fies when the RUN button is clicked.
+        /// This is used to run the selected agent and game in search of a solution.
+        /// Upon completion a message gox is displayed and the animation of the solution
+        /// is played.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btn_run_Click(object sender, EventArgs e)
         {
             if(cmb_gameSelect.SelectedItem == null || cmb_agentSelect.SelectedItem == null)
@@ -64,6 +68,8 @@ namespace Peg_Solitaire
                 MessageBox.Show("Please Select Game Board and Agent.", "Configuration Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
+            cmb_gameSelect.Enabled = false;
+            cmb_agentSelect.Enabled = false;
             // Setup selected game type
             if(cmb_gameSelect.Text == "Triangle, 5 Row")
             {
@@ -110,6 +116,13 @@ namespace Peg_Solitaire
 
         }
 
+        /// <summary>
+        /// Event that fires when the game type selection is changed.
+        /// This event is used to display the correct game board image
+        /// and animation.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void cmb_gameSelect_SelectedIndexChanged(object sender, EventArgs e)
         {
             resetPegs();
@@ -122,9 +135,24 @@ namespace Peg_Solitaire
             {
                 pnl_tri5.Hide();
             }
+
+            if (cmb_gameSelect.Text == "Triangle, 6 Row")
+            {
+                pnl_tri6.Show();
+            }
+            else
+            {
+                pnl_tri6.Hide();
+            }
         }
 
-        // Runs the move sequence animation, going through each move in the list, one per time tick.
+        /// <summary>
+        /// Runs the move sequence animation, going through each move in the list, one per time tick.
+        /// The timer that generates this event is enabled after a solution is found and disabled
+        /// once the animation is complete.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void animationTimer_Tick(object sender, EventArgs e)
         {
             List<List<int>> move = movesToWin[moveIndex];
@@ -133,13 +161,31 @@ namespace Peg_Solitaire
             {
                 animateMoveTri5(move);
             }
+            else if (cmb_gameSelect.Text == "Triangle, 6 Row")
+            {
+                animateMoveTri6(move);
+            }
+            else
+            {
+                animationTimer.Enabled = false;
+                cmb_gameSelect.Enabled = true;
+                cmb_agentSelect.Enabled = true;
+            }
 
             moveIndex++;
             if (moveIndex >= movesToWin.Count)
+            {
                 animationTimer.Enabled = false;
+                cmb_gameSelect.Enabled = true;
+                cmb_agentSelect.Enabled = true;
+            }
         }
 
-        // Adjust the pegs to reflect the given move
+        /// <summary>
+        /// Adjusts the 5 row triangle game board animation and peg locations to reflect the input move
+        /// </summary>
+        /// <param name="move">List of 3 coordinate pairs. These pairs indicate 
+        /// Original peg location, peg to remove, new peg location</param>
         private void animateMoveTri5(List<List<int>> move)
         {
             // Hide the peg that is moved
@@ -239,14 +285,155 @@ namespace Peg_Solitaire
                 tri5P4_4.Show();
         }
 
-        private void resetPegs()
+        /// <summary>
+        /// Adjusts the 6 row triangle game board animation and peg locations to reflect the input move
+        /// </summary>
+        /// <param name="move">List of 3 coordinate pairs. These pairs indicate 
+        /// Original peg location, peg to remove, new peg location</param>
+        private void animateMoveTri6(List<List<int>> move)
         {
-            if(cmb_gameSelect.Text == "Triangle, 5 Row")
-            {
-                resetPegsTri5();
-            }
+            // Hide the peg that is moved
+            if (move[0][0] == 0 && move[0][1] == 0)
+                tri6P0_0.Hide();
+            else if (move[0][0] == 1 && move[0][1] == 0)
+                tri6P1_0.Hide();
+            else if (move[0][0] == 1 && move[0][1] == 1)
+                tri6P1_1.Hide();
+            else if (move[0][0] == 2 && move[0][1] == 0)
+                tri6P2_0.Hide();
+            else if (move[0][0] == 2 && move[0][1] == 1)
+                tri6P2_1.Hide();
+            else if (move[0][0] == 2 && move[0][1] == 2)
+                tri6P2_2.Hide();
+            else if (move[0][0] == 3 && move[0][1] == 0)
+                tri6P3_0.Hide();
+            else if (move[0][0] == 3 && move[0][1] == 1)
+                tri6P3_1.Hide();
+            else if (move[0][0] == 3 && move[0][1] == 2)
+                tri6P3_2.Hide();
+            else if (move[0][0] == 3 && move[0][1] == 3)
+                tri6P3_3.Hide();
+            else if (move[0][0] == 4 && move[0][1] == 0)
+                tri6P4_0.Hide();
+            else if (move[0][0] == 4 && move[0][1] == 1)
+                tri6P4_1.Hide();
+            else if (move[0][0] == 4 && move[0][1] == 2)
+                tri6P4_2.Hide();
+            else if (move[0][0] == 4 && move[0][1] == 3)
+                tri6P4_3.Hide();
+            else if (move[0][0] == 4 && move[0][1] == 4)
+                tri6P4_4.Hide();
+            else if (move[0][0] == 5 && move[0][1] == 0)
+                tri6P5_0.Hide();
+            else if (move[0][0] == 5 && move[0][1] == 1)
+                tri6P5_1.Hide();
+            else if (move[0][0] == 5 && move[0][1] == 2)
+                tri6P5_2.Hide();
+            else if (move[0][0] == 5 && move[0][1] == 3)
+                tri6P5_3.Hide();
+            else if (move[0][0] == 5 && move[0][1] == 4)
+                tri6P5_4.Hide();
+            else if (move[0][0] == 5 && move[0][1] == 5)
+                tri6P5_5.Hide();
+
+            // Hide the peg that is jumped
+            if (move[1][0] == 0 && move[1][1] == 0)
+                tri6P0_0.Hide();
+            else if (move[1][0] == 1 && move[1][1] == 0)
+                tri6P1_0.Hide();
+            else if (move[1][0] == 1 && move[1][1] == 1)
+                tri6P1_1.Hide();
+            else if (move[1][0] == 2 && move[1][1] == 0)
+                tri6P2_0.Hide();
+            else if (move[1][0] == 2 && move[1][1] == 1)
+                tri6P2_1.Hide();
+            else if (move[1][0] == 2 && move[1][1] == 2)
+                tri6P2_2.Hide();
+            else if (move[1][0] == 3 && move[1][1] == 0)
+                tri6P3_0.Hide();
+            else if (move[1][0] == 3 && move[1][1] == 1)
+                tri6P3_1.Hide();
+            else if (move[1][0] == 3 && move[1][1] == 2)
+                tri6P3_2.Hide();
+            else if (move[1][0] == 3 && move[1][1] == 3)
+                tri6P3_3.Hide();
+            else if (move[1][0] == 4 && move[1][1] == 0)
+                tri6P4_0.Hide();
+            else if (move[1][0] == 4 && move[1][1] == 1)
+                tri6P4_1.Hide();
+            else if (move[1][0] == 4 && move[1][1] == 2)
+                tri6P4_2.Hide();
+            else if (move[1][0] == 4 && move[1][1] == 3)
+                tri6P4_3.Hide();
+            else if (move[1][0] == 4 && move[1][1] == 4)
+                tri6P4_4.Hide();
+            else if (move[1][0] == 5 && move[1][1] == 0)
+                tri6P5_0.Hide();
+            else if (move[1][0] == 5 && move[1][1] == 1)
+                tri6P5_1.Hide();
+            else if (move[1][0] == 5 && move[1][1] == 2)
+                tri6P5_2.Hide();
+            else if (move[1][0] == 5 && move[1][1] == 3)
+                tri6P5_3.Hide();
+            else if (move[1][0] == 5 && move[1][1] == 4)
+                tri6P5_4.Hide();
+            else if (move[1][0] == 5 && move[1][1] == 5)
+                tri6P5_5.Hide();
+
+            // Show the peg where it landed
+            if (move[2][0] == 0 && move[2][1] == 0)
+                tri6P0_0.Show();
+            else if (move[2][0] == 1 && move[2][1] == 0)
+                tri6P1_0.Show();
+            else if (move[2][0] == 1 && move[2][1] == 1)
+                tri6P1_1.Show();
+            else if (move[2][0] == 2 && move[2][1] == 0)
+                tri6P2_0.Show();
+            else if (move[2][0] == 2 && move[2][1] == 1)
+                tri6P2_1.Show();
+            else if (move[2][0] == 2 && move[2][1] == 2)
+                tri6P2_2.Show();
+            else if (move[2][0] == 3 && move[2][1] == 0)
+                tri6P3_0.Show();
+            else if (move[2][0] == 3 && move[2][1] == 1)
+                tri6P3_1.Show();
+            else if (move[2][0] == 3 && move[2][1] == 2)
+                tri6P3_2.Show();
+            else if (move[2][0] == 3 && move[2][1] == 3)
+                tri6P3_3.Show();
+            else if (move[2][0] == 4 && move[2][1] == 0)
+                tri6P4_0.Show();
+            else if (move[2][0] == 4 && move[2][1] == 1)
+                tri6P4_1.Show();
+            else if (move[2][0] == 4 && move[2][1] == 2)
+                tri6P4_2.Show();
+            else if (move[2][0] == 4 && move[2][1] == 3)
+                tri6P4_3.Show();
+            else if (move[2][0] == 4 && move[2][1] == 4)
+                tri6P4_4.Show();
+            else if (move[2][0] == 5 && move[2][1] == 0)
+                tri6P5_0.Show();
+            else if (move[2][0] == 5 && move[2][1] == 1)
+                tri6P5_1.Show();
+            else if (move[2][0] == 5 && move[2][1] == 2)
+                tri6P5_2.Show();
+            else if (move[2][0] == 5 && move[2][1] == 3)
+                tri6P5_3.Show();
+            else if (move[2][0] == 5 && move[2][1] == 4)
+                tri6P5_4.Show();
+            else if (move[2][0] == 5 && move[2][1] == 5)
+                tri6P5_5.Show();
         }
 
+        private void resetPegs()
+        {
+            resetPegsTri5();
+            resetPegsTri6();
+        }
+
+        /// <summary>
+        /// Resets the 5 row triangle board animation to its original state.
+        /// </summary>
         private void resetPegsTri5()
         {
             tri5P0_0.Hide();
@@ -264,6 +451,34 @@ namespace Peg_Solitaire
             tri5P4_2.Show();
             tri5P4_3.Show();
             tri5P4_4.Show();
+        }
+
+        /// <summary>
+        /// Resets the 6 row triangle board animation to its original state.
+        /// </summary>
+        private void resetPegsTri6()
+        {
+            tri6P0_0.Hide();
+            tri6P1_0.Show();
+            tri6P1_1.Show();
+            tri6P2_0.Show();
+            tri6P2_1.Show();
+            tri6P2_2.Show();
+            tri6P3_0.Show();
+            tri6P3_1.Show();
+            tri6P3_2.Show();
+            tri6P3_3.Show();
+            tri6P4_0.Show();
+            tri6P4_1.Show();
+            tri6P4_2.Show();
+            tri6P4_3.Show();
+            tri6P4_4.Show();
+            tri6P5_0.Show();
+            tri6P5_1.Show();
+            tri6P5_2.Show();
+            tri6P5_3.Show();
+            tri6P5_4.Show();
+            tri6P5_5.Show();
         }
     }
 }
