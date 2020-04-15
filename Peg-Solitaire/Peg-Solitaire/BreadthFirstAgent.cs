@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Peg_Solitaire
 {
-    class BreadthFirstAgent
+    class BreadthFirstAgent : Agent
     {
         private GameState gameState;
 
@@ -27,7 +27,7 @@ namespace Peg_Solitaire
         /// If no solution is found, a no solution exception is thrown.
         /// </summary>
         /// <returns> Nexted list containing a move sequence to a solution. </returns>
-        public List<List<List<int>>> Solve()
+        public override List<List<List<int>>> Solve()
         {
             Queue<List<List<List<int>>>> moveQueue = new Queue<List<List<List<int>>>>();
             Queue<GameState> stateQueue = new Queue<GameState>();

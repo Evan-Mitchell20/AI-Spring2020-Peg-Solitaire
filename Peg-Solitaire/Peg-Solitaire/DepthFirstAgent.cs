@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Peg_Solitaire
 {
-    class DepthFirstAgent
+    class DepthFirstAgent : Agent
     {
         private GameState gameState;
 
@@ -27,7 +27,7 @@ namespace Peg_Solitaire
         /// If no solution is found, a no solution exception is thrown.
         /// </summary>
         /// <returns> Nexted list containing a move sequence to a solution. </returns>
-        public List<List<List<int>>> Solve()
+        public override List<List<List<int>>> Solve()
         {
             Stack<List<List<int>>> moveStack = new Stack<List<List<int>>>();
             Stack<GameState> stateStack = new Stack<GameState>();
