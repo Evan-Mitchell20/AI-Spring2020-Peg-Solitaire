@@ -218,8 +218,8 @@
             this.cmb_agentSelect.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmb_agentSelect.FormattingEnabled = true;
             this.cmb_agentSelect.Items.AddRange(new object[] {
-            "Breadth First",
-            "Depth First"});
+            "Depth First",
+            "Breadth First"});
             this.cmb_agentSelect.Location = new System.Drawing.Point(335, 199);
             this.cmb_agentSelect.Name = "cmb_agentSelect";
             this.cmb_agentSelect.Size = new System.Drawing.Size(344, 39);
@@ -252,8 +252,7 @@
             this.cmb_gameSelect.FormattingEnabled = true;
             this.cmb_gameSelect.Items.AddRange(new object[] {
             "Triangle, 5 Row",
-            "Triangle, 6 Row",
-            "Triangle, 7 Row"});
+            "Triangle, 6 Row"});
             this.cmb_gameSelect.Location = new System.Drawing.Point(335, 138);
             this.cmb_gameSelect.Name = "cmb_gameSelect";
             this.cmb_gameSelect.Size = new System.Drawing.Size(344, 39);

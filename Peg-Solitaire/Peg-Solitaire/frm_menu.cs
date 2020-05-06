@@ -70,8 +70,9 @@ namespace Peg_Solitaire
             }
             cmb_gameSelect.Enabled = false;
             cmb_agentSelect.Enabled = false;
+            btn_run.Enabled = false;
             // Setup selected game type
-            if(cmb_gameSelect.Text == "Triangle, 5 Row")
+            if (cmb_gameSelect.Text == "Triangle, 5 Row")
             {
                 selectedGame = TriangleGames.BasicTriangle(5);
             }
@@ -110,7 +111,7 @@ namespace Peg_Solitaire
             }
 
             MessageBox.Show("Solution found! See animation to the right.", "Done", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
+            Application.UseWaitCursor = true;
             moveIndex = 0;
             animationTimer.Enabled = true;
 
@@ -156,7 +157,6 @@ namespace Peg_Solitaire
         private void animationTimer_Tick(object sender, EventArgs e)
         {
             List<List<int>> move = movesToWin[moveIndex];
-
             if (cmb_gameSelect.Text == "Triangle, 5 Row")
             {
                 animateMoveTri5(move);
@@ -167,17 +167,21 @@ namespace Peg_Solitaire
             }
             else
             {
+                Application.UseWaitCursor = false;
                 animationTimer.Enabled = false;
                 cmb_gameSelect.Enabled = true;
                 cmb_agentSelect.Enabled = true;
+                btn_run.Enabled = true;
             }
 
             moveIndex++;
             if (moveIndex >= movesToWin.Count)
             {
+                Application.UseWaitCursor = false;
                 animationTimer.Enabled = false;
                 cmb_gameSelect.Enabled = true;
                 cmb_agentSelect.Enabled = true;
+                btn_run.Enabled = true;
             }
         }
 

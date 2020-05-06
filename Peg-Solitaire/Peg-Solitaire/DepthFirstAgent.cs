@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Peg_Solitaire
 {
     class DepthFirstAgent : Agent
     {
         private GameState gameState;
+        DateTime timeWait = DateTime.Now.AddSeconds(10);
 
         public DepthFirstAgent(GameState startState)
         {
@@ -44,6 +46,14 @@ namespace Peg_Solitaire
 
             while(stateStack.Count > 0)
             {
+                Cursor.Current = Cursors.WaitCursor;
+                if (timeWait <= DateTime.Now)
+                {
+                    MessageBox.Show("No solution found by depth first search.");
+                    System.Diagnostics.Process.Start(Application.ExecutablePath);
+                    System.Diagnostics.Process.GetCurrentProcess().Kill();
+                    break;
+                }
                 top = stateStack.Pop();
                 moveTop = moveStack.Pop();
 

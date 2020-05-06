@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Peg_Solitaire
 {
     class BreadthFirstAgent : Agent
     {
         private GameState gameState;
+        DateTime timeWait = DateTime.Now.AddSeconds(10);
 
         public BreadthFirstAgent(GameState startState)
         {
@@ -34,7 +36,6 @@ namespace Peg_Solitaire
             List<GameState> explored = new List<GameState>();
             List<GameState> frontier = new List<GameState>();
             List<List<List<int>>> returnList = new List<List<List<int>>>();
-
             GameState frontState;
             List<GameState> children;
             List<List<List<int>>> frontMoveList;
@@ -46,6 +47,14 @@ namespace Peg_Solitaire
             moveQueue.Enqueue(new List<List<List<int>>>());
             while (stateQueue.Count > 0)
             {
+                Cursor.Current = Cursors.WaitCursor;
+                if (timeWait <= DateTime.Now)
+                {
+                    MessageBox.Show("No solution found by breadth first search.");
+                    System.Diagnostics.Process.Start(Application.ExecutablePath);
+                    System.Diagnostics.Process.GetCurrentProcess().Kill();
+                    break;
+                }
                 frontState = stateQueue.Dequeue();
                 frontMoveList = moveQueue.Dequeue();
                 explored.Add(frontState);
