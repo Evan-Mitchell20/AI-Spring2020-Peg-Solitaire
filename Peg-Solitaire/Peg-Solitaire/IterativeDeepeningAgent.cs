@@ -60,10 +60,16 @@ namespace Peg_Solitaire
                 returnList.Clear();
                 stateStack.Push(gameState);
                 moveStack.Push(new List<List<int>>());
-                while (stateStack.Count > 0 && moveStack.Count < depthLimit)
+                while (moveStack.Count < depthLimit)
                 {
                     if (DateTime.Now >= timeout)
                         throw new Exception("Search for solution timed out.");
+
+                    if(stateStack.Count <= 0)
+                    {
+                        done = true;
+                        break;
+                    }
                     top = stateStack.Pop();
                     moveTop = moveStack.Pop();
 
