@@ -10,11 +10,12 @@ namespace Peg_Solitaire
     class BreadthFirstAgent : Agent
     {
         private GameState gameState;
-        DateTime timeWait = DateTime.Now.AddSeconds(10);
+        private int totalExpandedStates;
 
         public BreadthFirstAgent(GameState startState)
         {
             gameState = startState;
+            totalExpandedStates = 0;
         }
 
         /// <summary>
@@ -29,7 +30,7 @@ namespace Peg_Solitaire
         /// If no solution is found, a no solution exception is thrown.
         /// </summary>
         /// <returns> Nexted list containing a move sequence to a solution. </returns>
-        public override List<List<List<int>>> Solve()
+        public override List<List<List<int>>> Solve(bool isTimeout, DateTime timeout)
         {
             Queue<List<List<List<int>>>> moveQueue = new Queue<List<List<List<int>>>>();
             Queue<GameState> stateQueue = new Queue<GameState>();
@@ -47,14 +48,8 @@ namespace Peg_Solitaire
             moveQueue.Enqueue(new List<List<List<int>>>());
             while (stateQueue.Count > 0)
             {
-                Cursor.Current = Cursors.WaitCursor;
-                if (timeWait <= DateTime.Now)
-                {
-                    MessageBox.Show("No solution found by breadth first search.");
-                    System.Diagnostics.Process.Start(Application.ExecutablePath);
-                    System.Diagnostics.Process.GetCurrentProcess().Kill();
-                    break;
-                }
+                if (DateTime.Now >= timeout)
+                    throw new Exception("Search for solution timed out.");
                 frontState = stateQueue.Dequeue();
                 frontMoveList = moveQueue.Dequeue();
                 explored.Add(frontState);
@@ -63,6 +58,7 @@ namespace Peg_Solitaire
                     return frontMoveList;
                 }
                 children = frontState.GetSuccessors();
+                totalExpandedStates++;
                 foreach (GameState indivChild in children)
                 {
                     if((!explored.Contains(indivChild)) && (!frontier.Contains(indivChild)))
@@ -77,7 +73,12 @@ namespace Peg_Solitaire
                     }
                 }
             }
-            throw new Exception("No solution found by breadth first search.");
+            throw new Exception("No solution exists for this game.");
+        }
+
+        public override int getTotalExpandedStates()
+        {
+            return totalExpandedStates;
         }
     }
 }

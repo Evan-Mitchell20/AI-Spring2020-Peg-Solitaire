@@ -10,11 +10,12 @@ namespace Peg_Solitaire
     class DepthFirstAgent : Agent
     {
         private GameState gameState;
-        DateTime timeWait = DateTime.Now.AddSeconds(10);
+        private int totalExpandedStates;
 
         public DepthFirstAgent(GameState startState)
         {
             gameState = startState;
+            totalExpandedStates = 0;
         }
 
         /// <summary>
@@ -29,7 +30,7 @@ namespace Peg_Solitaire
         /// If no solution is found, a no solution exception is thrown.
         /// </summary>
         /// <returns> Nexted list containing a move sequence to a solution. </returns>
-        public override List<List<List<int>>> Solve()
+        public override List<List<List<int>>> Solve(bool isTimeout, DateTime timeout)
         {
             Stack<List<List<int>>> moveStack = new Stack<List<List<int>>>();
             Stack<GameState> stateStack = new Stack<GameState>();
@@ -46,14 +47,8 @@ namespace Peg_Solitaire
 
             while(stateStack.Count > 0)
             {
-                Cursor.Current = Cursors.WaitCursor;
-                if (timeWait <= DateTime.Now)
-                {
-                    MessageBox.Show("No solution found by depth first search.");
-                    System.Diagnostics.Process.Start(Application.ExecutablePath);
-                    System.Diagnostics.Process.GetCurrentProcess().Kill();
-                    break;
-                }
+                if (DateTime.Now >= timeout)
+                    throw new Exception("Search for solution timed out.");
                 top = stateStack.Pop();
                 moveTop = moveStack.Pop();
 
@@ -67,6 +62,7 @@ namespace Peg_Solitaire
                 if(!expandedStates.Contains(top))
                 {
                     children = top.GetSuccessors();
+                    totalExpandedStates++;
                     expandedStates.Add(top);
                     stateChildren.Add(children);
                 }
@@ -89,12 +85,17 @@ namespace Peg_Solitaire
                 }
             }
             if (stateStack.Count == 0)
-                throw new Exception("No solution found by depth first search.");
+                throw new Exception("No solution exists for this game.");
             while (moveStack.Count > 1)
             {
                 returnList.Insert(0, moveStack.Pop());
             }
             return returnList;
+        }
+
+        public override int getTotalExpandedStates()
+        {
+            return totalExpandedStates;
         }
     }
 }

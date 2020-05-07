@@ -24,6 +24,11 @@ namespace Peg_Solitaire
         // Coordinates of final peg location
         private readonly List<int> goalLoc;
 
+        double alpha = 0.4;
+        double gamma = 0.9;
+        private List<List<List<int>>> QMoves;
+        private List<double> QValues;
+
         /// <summary>
         /// Constructor for a basic peg-solitaire game with no extra constraints
         /// Takes a peg map of starting peg locations as an argument.
@@ -47,6 +52,8 @@ namespace Peg_Solitaire
                     }
                 }
             }
+            QMoves = new List<List<List<int>>>();
+            QValues = new List<double>();
         }
 
         /// <summary>
@@ -209,6 +216,125 @@ namespace Peg_Solitaire
                 successorList.Add(NextState(move));
             }
             return successorList;
+        }
+
+        public double GetQValue(List<List<int>> move)
+        {
+            int qIndex;
+            bool hasValue = FindQValueIndex(move, out qIndex);
+            if (hasValue)
+                return QValues[qIndex];
+            else return 0;
+        }
+
+        public double GetMaxQValue()
+        {
+            List<List<List<int>>> validMoves = NextMoves();
+            bool first = true;
+            double currQVal = 0, maxQVal = 0;
+            foreach (List<List<int>> move in validMoves)
+            {
+                currQVal = GetQValue(move);
+                if (first || currQVal > maxQVal)
+                {
+                    maxQVal = currQVal;
+                    first = false;
+                }
+            }
+            return maxQVal;
+        }
+
+        public void UpdateQvalue(List<List<int>> move, double reward)
+        {
+            int qIndex;
+            bool hasValue = FindQValueIndex(move, out qIndex);
+            if (hasValue)
+            {
+                QValues[qIndex] = QValues[qIndex] + alpha * (reward + gamma * NextState(move).GetMaxQValue() - QValues[qIndex]);
+            }
+            else
+            {
+                QMoves.Add(move);
+                QValues.Add(alpha * (reward + gamma * NextState(move).GetMaxQValue()));
+            }
+        }
+
+        public List<List<int>> GetMoveFromQValue()
+        {
+            double currQVal = 0;
+            double maxQVal = GetMaxQValue();
+            Random random = new Random();
+            List<List<List<int>>> maxMoves = new List<List<List<int>>>();
+
+            List<List<List<int>>> validMoves = NextMoves();
+
+            if (validMoves.Count == 0)
+                return new List<List<int>>();
+
+            if (random.Next(100) < 3)
+                return validMoves[random.Next(validMoves.Count - 1)];
+
+            foreach (List<List<int>> move in validMoves)
+            {
+                currQVal = GetQValue(move);
+                if (currQVal >= maxQVal)
+                {
+                    maxMoves.Add(move);
+                }
+            }
+            return maxMoves[random.Next(maxMoves.Count - 1)];
+        }
+
+        public List<List<int>> GetBestQMove()
+        {
+            double currQVal = 0;
+            double maxQVal = GetMaxQValue();
+            Random random = new Random();
+            List<List<List<int>>> maxMoves = new List<List<List<int>>>();
+
+            List<List<List<int>>> validMoves = NextMoves();
+
+            if (validMoves.Count == 0)
+                return new List<List<int>>();
+
+            foreach (List<List<int>> move in validMoves)
+            {
+                currQVal = GetQValue(move);
+                if (currQVal >= maxQVal)
+                {
+                    maxMoves.Add(move);
+                }
+            }
+            return maxMoves[random.Next(maxMoves.Count - 1)];
+        }
+
+        public int GetPegsLeft()
+        {
+            return pegsLeft;
+        }
+        
+        /// <summary>
+        /// Finds the index of the Q value for the given move. Saves the index in the
+        /// out qIndex parameter. Returns true if successful or false there is no
+        /// Q value saved for the specified move.
+        /// </summary>
+        /// <param name="move"></param>
+        /// <param name="qIndex"></param>
+        /// <returns></returns>
+        private bool FindQValueIndex(List<List<int>> move, out int qIndex)
+        {
+            int index = 0;
+            foreach (List<List<int>> QMove in QMoves)
+            {
+                if (QMove[0][0] == move[0][0] && QMove[0][1] == move[0][1] && QMove[2][0] == move[2][0] && QMove[2][1] == move[2][1])
+                {
+                    qIndex = index;
+                    return true;
+                }
+                index++;
+            }
+            qIndex = -1;
+            return false;
         }
     }
 }

@@ -56,8 +56,10 @@
       <DependentUpon>frm_menu.cs</DependentUpon>
     </Compile>
     <Compile Include="GameState.cs" />
+    <Compile Include="IterativeDeepeningAgent.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QLearningAgent.cs" />
     <Compile Include="TriangleGames.cs" />
     <EmbeddedResource Include="frm_menu.resx">
       <DependentUpon>frm_menu.cs</DependentUpon>

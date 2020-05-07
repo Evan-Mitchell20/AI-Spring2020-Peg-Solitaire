@@ -31,6 +31,9 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frm_menu));
             this.pnl_config = new System.Windows.Forms.Panel();
+            this.txt_timeout = new System.Windows.Forms.TextBox();
+            this.cmb_timeout = new System.Windows.Forms.ComboBox();
+            this.lbl_timeout = new System.Windows.Forms.Label();
             this.cmb_agentSelect = new System.Windows.Forms.ComboBox();
             this.lbl_agent = new System.Windows.Forms.Label();
             this.btn_run = new System.Windows.Forms.Button();
@@ -40,7 +43,6 @@
             this.pnl_result = new System.Windows.Forms.Panel();
             this.lbl_output = new System.Windows.Forms.Label();
             this.txt_output = new System.Windows.Forms.RichTextBox();
-            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.pnl_tri5 = new System.Windows.Forms.Panel();
             this.tri5P4_4 = new System.Windows.Forms.PictureBox();
             this.tri5P4_3 = new System.Windows.Forms.PictureBox();
@@ -119,6 +121,7 @@
             this.tri6H1_0 = new System.Windows.Forms.PictureBox();
             this.tri6H0_0 = new System.Windows.Forms.PictureBox();
             this.pictureBox31 = new System.Windows.Forms.PictureBox();
+            this.btn_replay = new System.Windows.Forms.Button();
             this.pnl_config.SuspendLayout();
             this.pnl_result.SuspendLayout();
             this.pnl_tri5.SuspendLayout();
@@ -202,6 +205,10 @@
             // pnl_config
             // 
             this.pnl_config.BackColor = System.Drawing.Color.DarkOrange;
+            this.pnl_config.Controls.Add(this.btn_replay);
+            this.pnl_config.Controls.Add(this.txt_timeout);
+            this.pnl_config.Controls.Add(this.cmb_timeout);
+            this.pnl_config.Controls.Add(this.lbl_timeout);
             this.pnl_config.Controls.Add(this.cmb_agentSelect);
             this.pnl_config.Controls.Add(this.lbl_agent);
             this.pnl_config.Controls.Add(this.btn_run);
@@ -210,8 +217,40 @@
             this.pnl_config.Controls.Add(this.lblPegSolitaire);
             this.pnl_config.Location = new System.Drawing.Point(12, 12);
             this.pnl_config.Name = "pnl_config";
-            this.pnl_config.Size = new System.Drawing.Size(1073, 313);
+            this.pnl_config.Size = new System.Drawing.Size(1073, 368);
             this.pnl_config.TabIndex = 10;
+            // 
+            // txt_timeout
+            // 
+            this.txt_timeout.Location = new System.Drawing.Point(335, 263);
+            this.txt_timeout.Name = "txt_timeout";
+            this.txt_timeout.Size = new System.Drawing.Size(117, 38);
+            this.txt_timeout.TabIndex = 15;
+            this.txt_timeout.Text = "10";
+            // 
+            // cmb_timeout
+            // 
+            this.cmb_timeout.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmb_timeout.FormattingEnabled = true;
+            this.cmb_timeout.Items.AddRange(new object[] {
+            "Seconds",
+            "Minutes",
+            "Hours",
+            "Never"});
+            this.cmb_timeout.Location = new System.Drawing.Point(469, 263);
+            this.cmb_timeout.Name = "cmb_timeout";
+            this.cmb_timeout.Size = new System.Drawing.Size(210, 39);
+            this.cmb_timeout.TabIndex = 14;
+            // 
+            // lbl_timeout
+            // 
+            this.lbl_timeout.AutoSize = true;
+            this.lbl_timeout.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.lbl_timeout.Location = new System.Drawing.Point(66, 264);
+            this.lbl_timeout.Name = "lbl_timeout";
+            this.lbl_timeout.Size = new System.Drawing.Size(140, 39);
+            this.lbl_timeout.TabIndex = 13;
+            this.lbl_timeout.Text = "Timeout";
             // 
             // cmb_agentSelect
             // 
@@ -219,7 +258,9 @@
             this.cmb_agentSelect.FormattingEnabled = true;
             this.cmb_agentSelect.Items.AddRange(new object[] {
             "Depth First",
-            "Breadth First"});
+            "Breadth First",
+            "Iterative Deepening",
+            "Q-Learning"});
             this.cmb_agentSelect.Location = new System.Drawing.Point(335, 199);
             this.cmb_agentSelect.Name = "cmb_agentSelect";
             this.cmb_agentSelect.Size = new System.Drawing.Size(344, 39);
@@ -240,7 +281,7 @@
             this.btn_run.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold);
             this.btn_run.Location = new System.Drawing.Point(803, 138);
             this.btn_run.Name = "btn_run";
-            this.btn_run.Size = new System.Drawing.Size(179, 93);
+            this.btn_run.Size = new System.Drawing.Size(179, 73);
             this.btn_run.TabIndex = 10;
             this.btn_run.Text = "RUN";
             this.btn_run.UseVisualStyleBackColor = true;
@@ -251,8 +292,9 @@
             this.cmb_gameSelect.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmb_gameSelect.FormattingEnabled = true;
             this.cmb_gameSelect.Items.AddRange(new object[] {
-            "Triangle, 5 Row",
-            "Triangle, 6 Row"});
+            "Triangle, 5 Row Basic",
+            "Triangle, 6 Row Basic",
+            "Triangle, 5 Row Custom"});
             this.cmb_gameSelect.Location = new System.Drawing.Point(335, 138);
             this.cmb_gameSelect.Name = "cmb_gameSelect";
             this.cmb_gameSelect.Size = new System.Drawing.Size(344, 39);
@@ -284,16 +326,16 @@
             this.pnl_result.BackColor = System.Drawing.Color.CornflowerBlue;
             this.pnl_result.Controls.Add(this.lbl_output);
             this.pnl_result.Controls.Add(this.txt_output);
-            this.pnl_result.Location = new System.Drawing.Point(12, 333);
+            this.pnl_result.Location = new System.Drawing.Point(12, 386);
             this.pnl_result.Name = "pnl_result";
-            this.pnl_result.Size = new System.Drawing.Size(1073, 1000);
+            this.pnl_result.Size = new System.Drawing.Size(1073, 947);
             this.pnl_result.TabIndex = 11;
             // 
             // lbl_output
             // 
             this.lbl_output.AutoSize = true;
             this.lbl_output.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.lbl_output.Location = new System.Drawing.Point(13, 99);
+            this.lbl_output.Location = new System.Drawing.Point(16, 12);
             this.lbl_output.Name = "lbl_output";
             this.lbl_output.Size = new System.Drawing.Size(118, 39);
             this.lbl_output.TabIndex = 9;
@@ -301,17 +343,12 @@
             // 
             // txt_output
             // 
-            this.txt_output.Location = new System.Drawing.Point(20, 141);
+            this.txt_output.Location = new System.Drawing.Point(23, 54);
             this.txt_output.Name = "txt_output";
             this.txt_output.ReadOnly = true;
             this.txt_output.Size = new System.Drawing.Size(1035, 842);
             this.txt_output.TabIndex = 8;
             this.txt_output.Text = "";
-            // 
-            // backgroundWorker1
-            // 
-            this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
-            this.backgroundWorker1.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker1_RunWorkerCompleted);
             // 
             // pnl_tri5
             // 
@@ -361,6 +398,7 @@
             this.tri5P4_4.Size = new System.Drawing.Size(50, 50);
             this.tri5P4_4.TabIndex = 16;
             this.tri5P4_4.TabStop = false;
+            this.tri5P4_4.Click += new System.EventHandler(this.tri5P4_4_Click);
             // 
             // tri5P4_3
             // 
@@ -370,6 +408,7 @@
             this.tri5P4_3.Size = new System.Drawing.Size(50, 50);
             this.tri5P4_3.TabIndex = 15;
             this.tri5P4_3.TabStop = false;
+            this.tri5P4_3.Click += new System.EventHandler(this.tri5P4_3_Click);
             // 
             // tri5P4_2
             // 
@@ -379,6 +418,7 @@
             this.tri5P4_2.Size = new System.Drawing.Size(50, 50);
             this.tri5P4_2.TabIndex = 14;
             this.tri5P4_2.TabStop = false;
+            this.tri5P4_2.Click += new System.EventHandler(this.tri5P4_2_Click);
             // 
             // tri5P4_1
             // 
@@ -388,6 +428,7 @@
             this.tri5P4_1.Size = new System.Drawing.Size(50, 50);
             this.tri5P4_1.TabIndex = 13;
             this.tri5P4_1.TabStop = false;
+            this.tri5P4_1.Click += new System.EventHandler(this.tri5P4_1_Click);
             // 
             // tri5P4_0
             // 
@@ -397,6 +438,7 @@
             this.tri5P4_0.Size = new System.Drawing.Size(50, 50);
             this.tri5P4_0.TabIndex = 12;
             this.tri5P4_0.TabStop = false;
+            this.tri5P4_0.Click += new System.EventHandler(this.tri5P4_0_Click);
             // 
             // tri5P3_3
             // 
@@ -406,6 +448,7 @@
             this.tri5P3_3.Size = new System.Drawing.Size(50, 50);
             this.tri5P3_3.TabIndex = 11;
             this.tri5P3_3.TabStop = false;
+            this.tri5P3_3.Click += new System.EventHandler(this.tri5P3_3_Click);
             // 
             // tri5P3_2
             // 
@@ -415,6 +458,7 @@
             this.tri5P3_2.Size = new System.Drawing.Size(50, 50);
             this.tri5P3_2.TabIndex = 10;
             this.tri5P3_2.TabStop = false;
+            this.tri5P3_2.Click += new System.EventHandler(this.tri5P3_2_Click);
             // 
             // tri5P3_1
             // 
@@ -424,6 +468,7 @@
             this.tri5P3_1.Size = new System.Drawing.Size(50, 50);
             this.tri5P3_1.TabIndex = 9;
             this.tri5P3_1.TabStop = false;
+            this.tri5P3_1.Click += new System.EventHandler(this.tri5P3_1_Click);
             // 
             // tri5P3_0
             // 
@@ -433,6 +478,7 @@
             this.tri5P3_0.Size = new System.Drawing.Size(50, 50);
             this.tri5P3_0.TabIndex = 3;
             this.tri5P3_0.TabStop = false;
+            this.tri5P3_0.Click += new System.EventHandler(this.tri5P3_0_Click);
             // 
             // tri5P2_2
             // 
@@ -442,6 +488,7 @@
             this.tri5P2_2.Size = new System.Drawing.Size(50, 50);
             this.tri5P2_2.TabIndex = 7;
             this.tri5P2_2.TabStop = false;
+            this.tri5P2_2.Click += new System.EventHandler(this.tri5P2_2_Click);
             // 
             // tri5P2_1
             // 
@@ -451,6 +498,7 @@
             this.tri5P2_1.Size = new System.Drawing.Size(50, 50);
             this.tri5P2_1.TabIndex = 6;
             this.tri5P2_1.TabStop = false;
+            this.tri5P2_1.Click += new System.EventHandler(this.tri5P2_1_Click);
             // 
             // tri5P2_0
             // 
@@ -460,6 +508,7 @@
             this.tri5P2_0.Size = new System.Drawing.Size(50, 50);
             this.tri5P2_0.TabIndex = 5;
             this.tri5P2_0.TabStop = false;
+            this.tri5P2_0.Click += new System.EventHandler(this.tri5P2_0_Click);
             // 
             // tri5P1_1
             // 
@@ -469,6 +518,7 @@
             this.tri5P1_1.Size = new System.Drawing.Size(50, 50);
             this.tri5P1_1.TabIndex = 4;
             this.tri5P1_1.TabStop = false;
+            this.tri5P1_1.Click += new System.EventHandler(this.tri5P1_1_Click);
             // 
             // tri5P1_0
             // 
@@ -478,6 +528,7 @@
             this.tri5P1_0.Size = new System.Drawing.Size(50, 50);
             this.tri5P1_0.TabIndex = 8;
             this.tri5P1_0.TabStop = false;
+            this.tri5P1_0.Click += new System.EventHandler(this.tri5P1_0_Click);
             // 
             // tri5H4_4
             // 
@@ -487,6 +538,7 @@
             this.tri5H4_4.Size = new System.Drawing.Size(25, 25);
             this.tri5H4_4.TabIndex = 30;
             this.tri5H4_4.TabStop = false;
+            this.tri5H4_4.Click += new System.EventHandler(this.tri5H4_4_Click);
             // 
             // tri5H4_3
             // 
@@ -496,6 +548,7 @@
             this.tri5H4_3.Size = new System.Drawing.Size(25, 25);
             this.tri5H4_3.TabIndex = 29;
             this.tri5H4_3.TabStop = false;
+            this.tri5H4_3.Click += new System.EventHandler(this.tri5H4_3_Click);
             // 
             // tri5H4_2
             // 
@@ -505,6 +558,7 @@
             this.tri5H4_2.Size = new System.Drawing.Size(25, 25);
             this.tri5H4_2.TabIndex = 28;
             this.tri5H4_2.TabStop = false;
+            this.tri5H4_2.Click += new System.EventHandler(this.tri5H4_2_Click);
             // 
             // tri5H4_1
             // 
@@ -514,6 +568,7 @@
             this.tri5H4_1.Size = new System.Drawing.Size(25, 25);
             this.tri5H4_1.TabIndex = 27;
             this.tri5H4_1.TabStop = false;
+            this.tri5H4_1.Click += new System.EventHandler(this.tri5H4_1_Click);
             // 
             // tri5H4_0
             // 
@@ -523,6 +578,7 @@
             this.tri5H4_0.Size = new System.Drawing.Size(25, 25);
             this.tri5H4_0.TabIndex = 26;
             this.tri5H4_0.TabStop = false;
+            this.tri5H4_0.Click += new System.EventHandler(this.tri5H4_0_Click);
             // 
             // tri5H3_3
             // 
@@ -532,6 +588,7 @@
             this.tri5H3_3.Size = new System.Drawing.Size(25, 25);
             this.tri5H3_3.TabIndex = 25;
             this.tri5H3_3.TabStop = false;
+            this.tri5H3_3.Click += new System.EventHandler(this.tri5H3_3_Click);
             // 
             // tri5H3_2
             // 
@@ -541,6 +598,7 @@
             this.tri5H3_2.Size = new System.Drawing.Size(25, 25);
             this.tri5H3_2.TabIndex = 24;
             this.tri5H3_2.TabStop = false;
+            this.tri5H3_2.Click += new System.EventHandler(this.tri5H3_2_Click);
             // 
             // tri5H3_1
             // 
@@ -550,6 +608,7 @@
             this.tri5H3_1.Size = new System.Drawing.Size(25, 25);
             this.tri5H3_1.TabIndex = 23;
             this.tri5H3_1.TabStop = false;
+            this.tri5H3_1.Click += new System.EventHandler(this.tri5H3_1_Click);
             // 
             // tri5H3_0
             // 
@@ -559,6 +618,7 @@
             this.tri5H3_0.Size = new System.Drawing.Size(25, 25);
             this.tri5H3_0.TabIndex = 22;
             this.tri5H3_0.TabStop = false;
+            this.tri5H3_0.Click += new System.EventHandler(this.tri5H3_0_Click);
             // 
             // tri5H2_2
             // 
@@ -568,6 +628,7 @@
             this.tri5H2_2.Size = new System.Drawing.Size(25, 25);
             this.tri5H2_2.TabIndex = 21;
             this.tri5H2_2.TabStop = false;
+            this.tri5H2_2.Click += new System.EventHandler(this.tri5H2_2_Click);
             // 
             // tri5H2_1
             // 
@@ -577,6 +638,7 @@
             this.tri5H2_1.Size = new System.Drawing.Size(25, 25);
             this.tri5H2_1.TabIndex = 20;
             this.tri5H2_1.TabStop = false;
+            this.tri5H2_1.Click += new System.EventHandler(this.tri5H2_1_Click);
             // 
             // tri5H2_0
             // 
@@ -586,6 +648,7 @@
             this.tri5H2_0.Size = new System.Drawing.Size(25, 25);
             this.tri5H2_0.TabIndex = 19;
             this.tri5H2_0.TabStop = false;
+            this.tri5H2_0.Click += new System.EventHandler(this.tri5H2_0_Click);
             // 
             // tri5H1_1
             // 
@@ -595,6 +658,7 @@
             this.tri5H1_1.Size = new System.Drawing.Size(25, 25);
             this.tri5H1_1.TabIndex = 18;
             this.tri5H1_1.TabStop = false;
+            this.tri5H1_1.Click += new System.EventHandler(this.tri5H1_1_Click);
             // 
             // tri5H1_0
             // 
@@ -604,6 +668,7 @@
             this.tri5H1_0.Size = new System.Drawing.Size(25, 25);
             this.tri5H1_0.TabIndex = 17;
             this.tri5H1_0.TabStop = false;
+            this.tri5H1_0.Click += new System.EventHandler(this.tri5H1_0_Click);
             // 
             // tri5P0_0
             // 
@@ -614,6 +679,7 @@
             this.tri5P0_0.TabIndex = 2;
             this.tri5P0_0.TabStop = false;
             this.tri5P0_0.Visible = false;
+            this.tri5P0_0.Click += new System.EventHandler(this.tri5P0_0_Click);
             // 
             // tri5H0_0
             // 
@@ -623,6 +689,7 @@
             this.tri5H0_0.Size = new System.Drawing.Size(25, 25);
             this.tri5H0_0.TabIndex = 1;
             this.tri5H0_0.TabStop = false;
+            this.tri5H0_0.Click += new System.EventHandler(this.tri5H0_0_Click);
             // 
             // tri5Back
             // 
@@ -1088,6 +1155,18 @@
             this.pictureBox31.TabIndex = 0;
             this.pictureBox31.TabStop = false;
             // 
+            // btn_replay
+            // 
+            this.btn_replay.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold);
+            this.btn_replay.Location = new System.Drawing.Point(803, 230);
+            this.btn_replay.Name = "btn_replay";
+            this.btn_replay.Size = new System.Drawing.Size(179, 73);
+            this.btn_replay.TabIndex = 16;
+            this.btn_replay.Text = "Replay";
+            this.btn_replay.UseVisualStyleBackColor = true;
+            this.btn_replay.Visible = false;
+            this.btn_replay.Click += new System.EventHandler(this.btn_replay_Click);
+            // 
             // frm_menu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(240F, 240F);
@@ -1200,7 +1279,6 @@
         private System.Windows.Forms.Panel pnl_result;
         private System.Windows.Forms.RichTextBox txt_output;
         private System.Windows.Forms.Label lbl_output;
-        private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private System.Windows.Forms.Panel pnl_tri5;
         private System.Windows.Forms.Panel pnl_default;
         private System.Windows.Forms.PictureBox tri5P4_4;
@@ -1279,6 +1357,10 @@
         private System.Windows.Forms.PictureBox tri6H2_0;
         private System.Windows.Forms.PictureBox tri6H1_1;
         private System.Windows.Forms.PictureBox tri6H1_0;
+        private System.Windows.Forms.ComboBox cmb_timeout;
+        private System.Windows.Forms.Label lbl_timeout;
+        private System.Windows.Forms.TextBox txt_timeout;
+        private System.Windows.Forms.Button btn_replay;
     }
 }
 

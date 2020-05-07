@@ -13,12 +13,22 @@ namespace Peg_Solitaire
     class Agent
     {
         private GameState gameState;
+        private int totalExpandedStates;
 
         /// <summary>
         /// Stub for solve function of inherited classes
         /// </summary>
-        /// <returns> Nexted list containing a move sequence to a solution. </returns>
-        public virtual List<List<List<int>>> Solve()
+        /// <returns> Nested list containing a move sequence to a solution. </returns>
+        public virtual List<List<List<int>>> Solve(bool isTimeout, DateTime timeout)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Accessor function for expanded states
+        /// </summary>
+        /// <returns> Integer number of expanded states </returns>
+        public virtual int getTotalExpandedStates()
         {
             throw new NotImplementedException();
         }
