@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Peg_Solitaire
 {
@@ -25,7 +22,7 @@ namespace Peg_Solitaire
         }
 
         /// <summary>
-        /// Accessor function for expanded states
+        /// Stub Accessor function for expanded states
         /// </summary>
         /// <returns> Integer number of expanded states </returns>
         public virtual int getTotalExpandedStates()

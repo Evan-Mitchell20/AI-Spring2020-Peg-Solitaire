@@ -31,6 +31,7 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frm_menu));
             this.pnl_config = new System.Windows.Forms.Panel();
+            this.btn_replay = new System.Windows.Forms.Button();
             this.txt_timeout = new System.Windows.Forms.TextBox();
             this.cmb_timeout = new System.Windows.Forms.ComboBox();
             this.lbl_timeout = new System.Windows.Forms.Label();
@@ -121,7 +122,6 @@
             this.tri6H1_0 = new System.Windows.Forms.PictureBox();
             this.tri6H0_0 = new System.Windows.Forms.PictureBox();
             this.pictureBox31 = new System.Windows.Forms.PictureBox();
-            this.btn_replay = new System.Windows.Forms.Button();
             this.pnl_config.SuspendLayout();
             this.pnl_result.SuspendLayout();
             this.pnl_tri5.SuspendLayout();
@@ -219,6 +219,18 @@
             this.pnl_config.Name = "pnl_config";
             this.pnl_config.Size = new System.Drawing.Size(1073, 368);
             this.pnl_config.TabIndex = 10;
+            // 
+            // btn_replay
+            // 
+            this.btn_replay.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold);
+            this.btn_replay.Location = new System.Drawing.Point(803, 230);
+            this.btn_replay.Name = "btn_replay";
+            this.btn_replay.Size = new System.Drawing.Size(179, 73);
+            this.btn_replay.TabIndex = 16;
+            this.btn_replay.Text = "Replay";
+            this.btn_replay.UseVisualStyleBackColor = true;
+            this.btn_replay.Visible = false;
+            this.btn_replay.Click += new System.EventHandler(this.btn_replay_Click);
             // 
             // txt_timeout
             // 
@@ -1155,18 +1167,6 @@
             this.pictureBox31.TabIndex = 0;
             this.pictureBox31.TabStop = false;
             // 
-            // btn_replay
-            // 
-            this.btn_replay.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold);
-            this.btn_replay.Location = new System.Drawing.Point(803, 230);
-            this.btn_replay.Name = "btn_replay";
-            this.btn_replay.Size = new System.Drawing.Size(179, 73);
-            this.btn_replay.TabIndex = 16;
-            this.btn_replay.Text = "Replay";
-            this.btn_replay.UseVisualStyleBackColor = true;
-            this.btn_replay.Visible = false;
-            this.btn_replay.Click += new System.EventHandler(this.btn_replay_Click);
-            // 
             // frm_menu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(240F, 240F);
@@ -1179,6 +1179,7 @@
             this.Controls.Add(this.pnl_config);
             this.Controls.Add(this.pnl_default);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "frm_menu";

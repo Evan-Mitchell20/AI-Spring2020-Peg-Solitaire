@@ -11,6 +11,10 @@ namespace Peg_Solitaire
         private GameState gameState;
         private int totalExpandedStates;
 
+        /// <summary>
+        /// Constructor that sets up the agent for the given game start state
+        /// </summary>
+        /// <param name="startState"></param>
         public IterativeDeepeningAgent(GameState startState)
         {
             gameState = startState;
@@ -18,7 +22,7 @@ namespace Peg_Solitaire
         }
 
         /// <summary>
-        /// Attempts to solve the game state using a depth-first search algorithm.
+        /// Attempts to solve the game state using an iterative deepening algorithm.
         /// If a solution is found, the move sequence to the solution is returned.
         /// Each move is a list of coordinate pairs formatted as follows:
         /// The first pair is the row and column of the peg to be moved
@@ -106,6 +110,10 @@ namespace Peg_Solitaire
             return returnList;
         }
 
+        /// <summary>
+        /// Accessor function for the number of expanded states
+        /// </summary>
+        /// <returns>Number of expanded states</returns>
         public override int getTotalExpandedStates()
         {
             return totalExpandedStates;

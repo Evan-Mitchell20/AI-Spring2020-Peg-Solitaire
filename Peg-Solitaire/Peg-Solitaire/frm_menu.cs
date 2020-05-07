@@ -1,17 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Peg_Solitaire
 {
     public partial class frm_menu : Form
     {
+        // Global variables for form communication
         Agent selectedAgent;
         GameState selectedGame;
         List<List<List<int>>> movesToWin;
@@ -25,7 +20,9 @@ namespace Peg_Solitaire
         DateTime endTime;
         TimeSpan elapsedTime;
 
-
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public frm_menu()
         {
             InitializeComponent();
@@ -164,6 +161,11 @@ namespace Peg_Solitaire
             tri6P5_5.Show();
         }
 
+        /// <summary>
+        /// Resets the visual representation of the custom game board
+        /// for animation replay or for making a new custom board
+        /// using the previous setup as a starting point.
+        /// </summary>
         private void resetCustomTri5()
         {
             if(customPegMap[0][0])
@@ -287,6 +289,7 @@ namespace Peg_Solitaire
                 tri5P4_4.Hide();
             }
         }
+
         /// <summary>
         /// Event that fies when the RUN button is clicked.
         /// This is used to run the selected agent and game in search of a solution.
@@ -306,6 +309,7 @@ namespace Peg_Solitaire
             cmb_agentSelect.Enabled = false;
             btn_run.Enabled = false;
             btn_replay.Hide();
+            string messageBoxMesage;
             // Setup selected game type
             if (cmb_gameSelect.Text == "Triangle, 5 Row Basic")
             {
@@ -386,8 +390,12 @@ namespace Peg_Solitaire
             elapsedTime = endTime - startTime;
             lineToAdd = string.Format("Elapsed Time (h:m:s.ms): {0}:{1}:{2}.{3}\n", elapsedTime.Hours, elapsedTime.Minutes, elapsedTime.Seconds, elapsedTime.Milliseconds);
             txt_output.AppendText(lineToAdd);
-            lineToAdd = string.Format("Expanded {0} states to find solution:\n\n", selectedAgent.getTotalExpandedStates());
-            txt_output.AppendText(lineToAdd);
+            if(cmb_agentSelect.Text != "Q-Learning")
+            {
+                lineToAdd = string.Format("Expanded {0} states to find solution:\n\n", selectedAgent.getTotalExpandedStates());
+                txt_output.AppendText(lineToAdd);
+            }
+
             foreach (List<List<int>> move in movesToWin)
             {
                 moveNumber++;
@@ -399,7 +407,15 @@ namespace Peg_Solitaire
             }
 
             Cursor.Current = Cursors.Default;
-            string messageBoxMesage = string.Format("Solution Found! {0} states expanded. See animation to the right.", selectedAgent.getTotalExpandedStates());
+            if (cmb_agentSelect.Text == "Q-Learning")
+            {
+                messageBoxMesage = string.Format("Learning sequence complete. See animation to the right.");
+            }
+            else
+            {
+                messageBoxMesage = string.Format("Solution Found! {0} states expanded. See animation to the right.", selectedAgent.getTotalExpandedStates());
+            }
+            
             MessageBox.Show(messageBoxMesage, "Done", MessageBoxButtons.OK, MessageBoxIcon.Information);
             moveIndex = 0;
             enableCustom = false;
@@ -742,10 +758,15 @@ namespace Peg_Solitaire
                 tri6P5_5.Show();
         }
 
+        // All functions below this point are click events
+        // for pegs and holes used to setup custom 
+        // game board configurations
+
         private void tri5H0_0_Click(object sender, EventArgs e)
         {
             if (!custom || !enableCustom)
                 return;
+            resetCustomTri5();
             customPegMap[0][0] = true;
             tri5P0_0.Show();
             btn_replay.Hide();
@@ -755,6 +776,7 @@ namespace Peg_Solitaire
         {
             if (!custom || !enableCustom)
                 return;
+            resetCustomTri5();
             customPegMap[1][0] = true;
             tri5P1_0.Show();
             btn_replay.Hide();
@@ -764,6 +786,7 @@ namespace Peg_Solitaire
         {
             if (!custom || !enableCustom)
                 return;
+            resetCustomTri5();
             customPegMap[1][1] = true;
             tri5P1_1.Show();
             btn_replay.Hide();
@@ -773,6 +796,7 @@ namespace Peg_Solitaire
         {
             if (!custom || !enableCustom)
                 return;
+            resetCustomTri5();
             customPegMap[2][0] = true;
             tri5P2_0.Show();
             btn_replay.Hide();
@@ -782,6 +806,7 @@ namespace Peg_Solitaire
         {
             if (!custom || !enableCustom)
                 return;
+            resetCustomTri5();
             customPegMap[2][1] = true;
             tri5P2_1.Show();
             btn_replay.Hide();
@@ -791,6 +816,7 @@ namespace Peg_Solitaire
         {
             if (!custom || !enableCustom)
                 return;
+            resetCustomTri5();
             customPegMap[2][2] = true;
             tri5P2_2.Show();
             btn_replay.Hide();
@@ -800,6 +826,7 @@ namespace Peg_Solitaire
         {
             if (!custom || !enableCustom)
                 return;
+            resetCustomTri5();
             customPegMap[3][0] = true;
             tri5P3_0.Show();
             btn_replay.Hide();
@@ -809,6 +836,7 @@ namespace Peg_Solitaire
         {
             if (!custom || !enableCustom)
                 return;
+            resetCustomTri5();
             customPegMap[3][1] = true;
             tri5P3_1.Show();
             btn_replay.Hide();
@@ -818,6 +846,7 @@ namespace Peg_Solitaire
         {
             if (!custom || !enableCustom)
                 return;
+            resetCustomTri5();
             customPegMap[3][2] = true;
             tri5P3_2.Show();
             btn_replay.Hide();
@@ -827,6 +856,7 @@ namespace Peg_Solitaire
         {
             if (!custom || !enableCustom)
                 return;
+            resetCustomTri5();
             customPegMap[3][3] = true;
             tri5P3_3.Show();
             btn_replay.Hide();
@@ -836,6 +866,7 @@ namespace Peg_Solitaire
         {
             if (!custom || !enableCustom)
                 return;
+            resetCustomTri5();
             customPegMap[4][0] = true;
             tri5P4_0.Show();
             btn_replay.Hide();
@@ -845,6 +876,7 @@ namespace Peg_Solitaire
         {
             if (!custom || !enableCustom)
                 return;
+            resetCustomTri5();
             customPegMap[4][1] = true;
             tri5P4_1.Show();
             btn_replay.Hide();
@@ -854,6 +886,7 @@ namespace Peg_Solitaire
         {
             if (!custom || !enableCustom)
                 return;
+            resetCustomTri5();
             customPegMap[4][2] = true;
             tri5P4_2.Show();
             btn_replay.Hide();
@@ -863,6 +896,7 @@ namespace Peg_Solitaire
         {
             if (!custom || !enableCustom)
                 return;
+            resetCustomTri5();
             customPegMap[4][3] = true;
             tri5P4_3.Show();
             btn_replay.Hide();
@@ -872,6 +906,7 @@ namespace Peg_Solitaire
         {
             if (!custom || !enableCustom)
                 return;
+            resetCustomTri5();
             customPegMap[4][4] = true;
             tri5P4_4.Show();
             btn_replay.Hide();
@@ -881,6 +916,7 @@ namespace Peg_Solitaire
         {
             if (!custom || !enableCustom)
                 return;
+            resetCustomTri5();
             customPegMap[0][0] = false;
             tri5P0_0.Hide();
             btn_replay.Hide();
@@ -890,6 +926,7 @@ namespace Peg_Solitaire
         {
             if (!custom || !enableCustom)
                 return;
+            resetCustomTri5();
             customPegMap[1][0] = false;
             tri5P1_0.Hide();
             btn_replay.Hide();
@@ -899,6 +936,7 @@ namespace Peg_Solitaire
         {
             if (!custom || !enableCustom)
                 return;
+            resetCustomTri5();
             customPegMap[1][1] = false;
             tri5P1_1.Hide();
             btn_replay.Hide();
@@ -908,6 +946,7 @@ namespace Peg_Solitaire
         {
             if (!custom || !enableCustom)
                 return;
+            resetCustomTri5();
             customPegMap[2][0] = false;
             tri5P2_0.Hide();
             btn_replay.Hide();
@@ -917,6 +956,7 @@ namespace Peg_Solitaire
         {
             if (!custom || !enableCustom)
                 return;
+            resetCustomTri5();
             customPegMap[2][1] = false;
             tri5P2_1.Hide();
             btn_replay.Hide();
@@ -926,6 +966,7 @@ namespace Peg_Solitaire
         {
             if (!custom || !enableCustom)
                 return;
+            resetCustomTri5();
             customPegMap[2][2] = false;
             tri5P2_2.Hide();
             btn_replay.Hide();
@@ -935,6 +976,7 @@ namespace Peg_Solitaire
         {
             if (!custom || !enableCustom)
                 return;
+            resetCustomTri5();
             customPegMap[3][0] = false;
             tri5P3_0.Hide();
             btn_replay.Hide();
@@ -944,6 +986,7 @@ namespace Peg_Solitaire
         {
             if (!custom || !enableCustom)
                 return;
+            resetCustomTri5();
             customPegMap[3][1] = false;
             tri5P3_1.Hide();
             btn_replay.Hide();
@@ -953,6 +996,7 @@ namespace Peg_Solitaire
         {
             if (!custom || !enableCustom)
                 return;
+            resetCustomTri5();
             customPegMap[3][2] = false;
             tri5P3_2.Hide();
             btn_replay.Hide();
@@ -962,6 +1006,7 @@ namespace Peg_Solitaire
         {
             if (!custom || !enableCustom)
                 return;
+            resetCustomTri5();
             customPegMap[3][3] = false;
             tri5P3_3.Hide();
             btn_replay.Hide();
@@ -971,6 +1016,7 @@ namespace Peg_Solitaire
         {
             if (!custom || !enableCustom)
                 return;
+            resetCustomTri5();
             customPegMap[4][0] = false;
             tri5P4_0.Hide();
             btn_replay.Hide();
@@ -980,6 +1026,7 @@ namespace Peg_Solitaire
         {
             if (!custom || !enableCustom)
                 return;
+            resetCustomTri5();
             customPegMap[4][1] = false;
             tri5P4_1.Hide();
             btn_replay.Hide();
@@ -989,6 +1036,7 @@ namespace Peg_Solitaire
         {
             if (!custom || !enableCustom)
                 return;
+            resetCustomTri5();
             customPegMap[4][2] = false;
             tri5P4_2.Hide();
             btn_replay.Hide();
@@ -998,6 +1046,7 @@ namespace Peg_Solitaire
         {
             if (!custom || !enableCustom)
                 return;
+            resetCustomTri5();
             customPegMap[4][3] = false;
             tri5P4_3.Hide();
             btn_replay.Hide();
@@ -1007,6 +1056,7 @@ namespace Peg_Solitaire
         {
             if (!custom || !enableCustom)
                 return;
+            resetCustomTri5();
             customPegMap[4][4] = false;
             tri5P4_4.Hide();
             btn_replay.Hide();

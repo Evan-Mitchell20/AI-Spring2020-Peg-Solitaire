@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Peg_Solitaire
 {
@@ -23,10 +20,13 @@ namespace Peg_Solitaire
         private readonly bool hasGoalLoc;
         // Coordinates of final peg location
         private readonly List<int> goalLoc;
-
+        // Q-Learning rate
         double alpha = 0.4;
+        // Q-Learning future discount
         double gamma = 0.9;
+        // List of actions that have Q values
         private List<List<List<int>>> QMoves;
+        // Q Values corresponding to actions
         private List<double> QValues;
 
         /// <summary>
@@ -70,6 +70,15 @@ namespace Peg_Solitaire
             {
                 return (pegsLeft == 1) && pegLocations[goalLoc[0] - 1][goalLoc[1] - 1];
             }
+        }
+
+        /// <summary>
+        /// Accessor function for remaining pegs
+        /// </summary>
+        /// <returns>number of remaining pegs</returns>
+        public int GetPegsLeft()
+        {
+            return pegsLeft;
         }
 
         /// <summary>
@@ -218,6 +227,12 @@ namespace Peg_Solitaire
             return successorList;
         }
 
+        /// <summary>
+        /// Returns the Q-value for the given action
+        /// in the current state
+        /// </summary>
+        /// <param name="move"></param>
+        /// <returns>Q-value</returns>
         public double GetQValue(List<List<int>> move)
         {
             int qIndex;
@@ -227,6 +242,11 @@ namespace Peg_Solitaire
             else return 0;
         }
 
+        /// <summary>
+        /// Returns the highest Q-value out of all
+        /// possible actions from the current state
+        /// </summary>
+        /// <returns>Highest Q-value</returns>
         public double GetMaxQValue()
         {
             List<List<List<int>>> validMoves = NextMoves();
@@ -244,6 +264,13 @@ namespace Peg_Solitaire
             return maxQVal;
         }
 
+        /// <summary>
+        /// Updates the Q-value for the input action
+        /// from the current state based on the input
+        /// reward received from the action.
+        /// </summary>
+        /// <param name="move"></param>
+        /// <param name="reward"></param>
         public void UpdateQvalue(List<List<int>> move, double reward)
         {
             int qIndex;
@@ -259,6 +286,11 @@ namespace Peg_Solitaire
             }
         }
 
+        /// <summary>
+        /// Uses Q values to provide the next action to be taken.
+        /// Includes a 3% exploration rate
+        /// </summary>
+        /// <returns>next move to be taken</returns>
         public List<List<int>> GetMoveFromQValue()
         {
             double currQVal = 0;
@@ -285,6 +317,10 @@ namespace Peg_Solitaire
             return maxMoves[random.Next(maxMoves.Count - 1)];
         }
 
+        /// <summary>
+        /// Returns the next move based on Q values without exploration
+        /// </summary>
+        /// <returns>next move to be taken</returns>
         public List<List<int>> GetBestQMove()
         {
             double currQVal = 0;
@@ -306,11 +342,6 @@ namespace Peg_Solitaire
                 }
             }
             return maxMoves[random.Next(maxMoves.Count - 1)];
-        }
-
-        public int GetPegsLeft()
-        {
-            return pegsLeft;
         }
         
         /// <summary>

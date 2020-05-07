@@ -1,22 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Peg_Solitaire
 {
     class QLearningAgent : Agent
     {
         private GameState gameState;
-        private int totalExpandedStates;
+        private int totalExpandedStates; // Not used for a Q learning agent, but inherited from Agent class
 
+        /// <summary>
+        /// Constructor that sets up the agent for the given game start state
+        /// </summary>
+        /// <param name="startState"></param>
         public QLearningAgent(GameState startState)
         {
             gameState = startState;
             totalExpandedStates = 0;
         }
 
+        /// <summary>
+        /// Runs Q-learning until the time specified by the timeout parameter
+        /// Once the time is reached, returns the best path found by using
+        /// the learning sequence.
+        /// </summary>
+        /// <param name="isTimeout"></param>
+        /// <param name="timeout"></param>
+        /// <returns></returns>
         public override List<List<List<int>>> Solve(bool isTimeout, DateTime timeout)
         {
             GameState currentState = gameState;
@@ -58,6 +67,10 @@ namespace Peg_Solitaire
             return moveList;
         }
 
+        /// <summary>
+        /// Override required for virtual function in Agent class, but not used.
+        /// </summary>
+        /// <returns>number of expanded states (0)</returns>
         public override int getTotalExpandedStates()
         {
             return totalExpandedStates;

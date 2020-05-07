@@ -1,17 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace Peg_Solitaire
 {
+    /// <summary>
+    /// Agent that uses breadth-first search to solve puzzles
+    /// </summary>
     class BreadthFirstAgent : Agent
     {
         private GameState gameState;
         private int totalExpandedStates;
 
+        /// <summary>
+        /// Constructor that sets up the agent for the given game start state
+        /// </summary>
+        /// <param name="startState"></param>
         public BreadthFirstAgent(GameState startState)
         {
             gameState = startState;
@@ -76,6 +79,10 @@ namespace Peg_Solitaire
             throw new Exception("No solution exists for this game.");
         }
 
+        /// <summary>
+        /// Accessor function for the number of expanded states
+        /// </summary>
+        /// <returns>Number of expanded states</returns>
         public override int getTotalExpandedStates()
         {
             return totalExpandedStates;
